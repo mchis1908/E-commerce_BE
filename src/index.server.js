@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin/auth');
 const categoryRoutes = require('./routes/category'); //Định tuyến category
+const productRoutes = require('./routes/product'); //Định tuyến product
 
 //environment variable
 env.config();
@@ -24,6 +25,7 @@ app.use(express.json())
 app.use("/api", authRoutes);
 app.use("/api", adminRoutes);
 app.use("/api", categoryRoutes);
+app.use("/api", productRoutes);
 
 
 
