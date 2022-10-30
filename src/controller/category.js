@@ -33,7 +33,12 @@ exports.addCategory = (req, res) => {
 
     const categoryObj = {
         name: req.body.name,
-        slug: slugify(req.body.name),
+        slug: slugify(req.body.name)
+    }
+
+    // Kiểm tra xem nếu hãng đó có logo thì add thêm thuộc tính Category Image
+    if (req.file) {
+        categoryObj.categoryImage = process.env.API + '/public/' + req.file.filename
     }
 
     if (req.body.parentId) {
