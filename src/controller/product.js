@@ -2,6 +2,7 @@
 const Product = require('../models/product');
 const shortid = require('shortid');
 const slugify = require('slugify');
+const Category = require('../models/category');
 
 // Tạo product
 exports.createProduct = (req, res) => {
@@ -37,5 +38,46 @@ exports.createProduct = (req, res) => {
         }
     }));
 
+
+}
+
+exports.getProductsBySlug = (req, res) => {
+    const { slug } = req.params;
+    Category.findOne({ slug: slug })
+        .select('_id')
+        .exec((error, category) => {
+            if (error) {
+                return res.status(400).json({ error });
+            }
+            if (category) {
+                Product.find({ category: category._id })
+                    .exec((error, products) => {
+
+                        if (error) {
+                            return res.status(400).json({ error });
+                        }
+
+                        if (products.length > 0) {
+
+                            res.status(200).json({
+                                products,
+                                productsByPrice: {
+                                    under2000k: products.filter(product => product.price <= 2000000),
+                                    under5000k: products.filter(product => product.price > 2000000 && product.price <= 5000000),
+                                    under10000k: products.filter(product => product.price > 5000000 && product.price <= 10000000),
+                                    under15000k: products.filter(product => product.price > 10000000 && product.price <= 15000000),
+                                    under20000k: products.filter(product => product.price > 15000000 && product.price <= 20000000),
+                                    under30000k: products.filter(product => product.price > 20000000 && product.price <= 30000000),
+                                    under50000k: products.filter(product => product.price > 30000000 && product.price <= 50000000)
+                                }
+                            });
+                        }
+
+                    })
+
+            }
+
+
+        });
 
 }
