@@ -1,7 +1,7 @@
 const express = require('express');
 const { requireSignin, adminMiddleware } = require('../common_middleware');
 
-const { addCategory, getCategory } = require('../controller/category');
+const { addCategory, getCategory, updateCategories } = require('../controller/category');
 const router = express.Router();
 const shortid = require('shortid');
 const path = require('path');
@@ -23,5 +23,7 @@ const upload = multer({ storage });
 router.post('/category/create', requireSignin, adminMiddleware, upload.single('categoryImage'), addCategory);
 // Lấy thông tin category
 router.get('/category/getcategory', getCategory);
+//Cập nhật thông tin category
+router.post('/category/update', upload.array('categoryImage'), updateCategories);
 
 module.exports = router;
