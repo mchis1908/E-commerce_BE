@@ -21,11 +21,8 @@ function createCategories(categories, parentId = null) {
             parentId: cate.parentId,
             children: createCategories(categories, cate._id)
         })
-
     }
-
     return categoryList;
-
 }
 
 
@@ -53,7 +50,6 @@ exports.addCategory = (req, res) => {
             return res.status(201).json({ category });
         }
     })
-
 }
 
 // Lấy thông tin category
@@ -63,10 +59,49 @@ exports.getCategory = (req, res) => {
             if (error) return res.status(400).json({ error });
 
             if (categories) {
-
                 const categoryList = createCategories(categories);
-
                 res.status(200).json({ categoryList });
             }
         });
 }
+
+//API để cập nhật thông tin về Category
+exports.updateCategories = async (req, res) => {
+    const {_id, name, parentId, type} = req.body
+
+    // Mảng để lưu trữ những category nào đã được cập nhật
+    const updatedCategories = []
+
+    // Cập nhật nhiều Category cùng một lúc
+    if (name instanceof Array) {
+        // Duyệt qua từng phần tử trong body của mảng request để biết Category nào được yêu cầu cập nhật
+        for (let i = 0; i < name.length; i++) {
+            const category = {
+                name: name[i],
+                type: type[i],
+            }
+            if (parentId[i] !== "") {
+                category.parentId = parentId[i]
+            }
+
+            const updatedCategory = await Category.findOneAndUpdate({_id: _id[i]}, category, {new: true})
+            updatedCategories.push(updatedCategory)
+        }
+        return res.status(201).json({updateCategories : updatedCategories})
+
+    // Cập nhật 1 Category
+    } else {
+        const category = {
+            name, 
+            type
+        }
+
+        if (parentId !== "") {
+            category.parentId = parentId
+        }
+
+        const updatedCategory = await Category.findOneAndUpdate({_id}, category, {new: true})
+        return res.status(201).json({ updatedCategory })
+    }
+}
+
