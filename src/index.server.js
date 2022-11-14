@@ -13,6 +13,7 @@ const categoryRoutes = require('./routes/category'); //Định tuyến category
 const productRoutes = require('./routes/product'); //Định tuyến product
 const cartRoutes = require('./routes/cart'); //Route cho phần Cart
 const initialDataRoutes = require('./routes/admin/initialData');
+const pageRoutes = require('./routes/admin/page');
 
 //environment variable
 env.config();
@@ -33,6 +34,7 @@ app.use("/api", categoryRoutes);
 app.use("/api", productRoutes);
 app.use("/api", cartRoutes);
 app.use("/api", initialDataRoutes);
+app.use("/api", pageRoutes);
 
 
 app.listen(process.env.PORT, () => {
