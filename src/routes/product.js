@@ -1,30 +1,52 @@
-const express = require('express');
+const express = require("express");
 // const { addCategory, getCategory } = require('../controller/category');
-const { requireSignin, adminMiddleware } = require('../common_middleware');
-const { createProduct, getProductsBySlug, getProductDetailsById } = require('../controller/product');
-const multer = require('multer');
+const { requireSignin, adminMiddleware } = require("../common_middleware");
+const {
+  createProduct,
+  getProductsBySlug,
+  getProductDetailsById,
+  deleteProductById,
+  getProducts,
+} = require("../controller/product");
+const multer = require("multer");
 const router = express.Router();
-const shortid = require('shortid');
-const path = require('path');
+const shortid = require("shortid");
+const path = require("path");
 
 // Lưu trữ ảnh product
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, path.join(path.dirname(__dirname), 'uploads'));
-    },
-    filename: function (req, file, cb) {
-        cb(null, shortid.generate() + '-' + file.originalname);
-    }
-})
+  destination: function (req, file, cb) {
+    cb(null, path.join(path.dirname(__dirname), "uploads"));
+  },
+  filename: function (req, file, cb) {
+    cb(null, shortid.generate() + "-" + file.originalname);
+  },
+});
 
 const upload = multer({ storage });
 
 // Kiểm tra và tạo product
-router.post('/product/create', requireSignin, adminMiddleware,
-    upload.array('productPicture'), createProduct);
+router.post(
+  "/product/create",
+  requireSignin,
+  adminMiddleware,
+  upload.array("productPicture"),
+  createProduct
+);
 // Lấy thông tin product
-router.get('/products/:slug', getProductsBySlug)
+router.get("/products/:slug", getProductsBySlug);
 // router.get('/category/getcategory', getCategory);
-router.get('/product/:productId', getProductDetailsById)
-
+router.get("/product/:productId", getProductDetailsById);
+router.delete(
+  "/product/deleteProductById",
+  requireSignin,
+  adminMiddleware,
+  deleteProductById
+);
+router.post(
+  "/product/getProducts",
+  requireSignin,
+  adminMiddleware,
+  getProducts
+);
 module.exports = router;
