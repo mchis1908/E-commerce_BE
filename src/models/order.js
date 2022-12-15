@@ -46,7 +46,7 @@ const orderSchema = new mongoose.Schema(
       {
         type: {
           type: String,
-          enum: ["ordered", "packed", "shipped", "delivered"],
+          enum: ["ordered", "packed", "shipped", "delivered", "canceled"],
           default: "ordered",
         },
         date: {
