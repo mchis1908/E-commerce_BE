@@ -7,6 +7,7 @@ const {
   getProductDetailsById,
   deleteProductById,
   getProducts,
+  getUserProducts,
 } = require("../controller/product");
 const multer = require("multer");
 const router = express.Router();
@@ -37,6 +38,8 @@ router.post(
 router.get("/products/:slug", getProductsBySlug);
 // router.get('/category/getcategory', getCategory);
 router.get("/product/:productId", getProductDetailsById);
+router.get("/products", getUserProducts);
+
 router.delete(
   "/product/deleteProductById",
   requireSignin,
