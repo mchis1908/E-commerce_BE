@@ -30,6 +30,7 @@ exports.addCategory = (req, res) => {
   const categoryObj = {
     name: req.body.name,
     slug: `${slugify(req.body.name)}-${shortid.generate()}`,
+    type: req.body.type,
   };
 
   // Kiểm tra xem nếu hãng đó có logo thì add thêm thuộc tính Category Image
