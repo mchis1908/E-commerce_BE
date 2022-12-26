@@ -1,6 +1,10 @@
 const express = require("express");
 // const { addCategory, getCategory } = require('../controller/category');
-const { requireSignin, adminMiddleware } = require("../common_middleware");
+const {
+  requireSignin,
+  adminMiddleware,
+  userMiddleware,
+} = require("../common_middleware");
 const {
   createProduct,
   getProductsBySlug,
@@ -8,6 +12,7 @@ const {
   deleteProductById,
   getProducts,
   getUserProducts,
+  addReviewToProduct,
 } = require("../controller/product");
 const multer = require("multer");
 const router = express.Router();
@@ -51,5 +56,12 @@ router.post(
   requireSignin,
   adminMiddleware,
   getProducts
+);
+
+router.post(
+  "/product/addReview",
+  requireSignin,
+  userMiddleware,
+  addReviewToProduct
 );
 module.exports = router;

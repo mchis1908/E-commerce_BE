@@ -10,6 +10,6 @@ const router = require("express").Router();
 router.post("/addOrder", requireSignin, userMiddleware, addOrder);
 router.get("/getOrders", requireSignin, userMiddleware, getOrders);
 router.post("/getOrder", requireSignin, userMiddleware, getOrder);
-router.post(`/order/update`, requireSignin, userMiddleware, updateOrder);
+router.post(`/user/order/update`, requireSignin, userMiddleware, updateOrder);
 
 module.exports = router;
