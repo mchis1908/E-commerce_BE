@@ -109,6 +109,10 @@ exports.getProductDetailsById = (req, res) => {
         path: "category",
         select: "_id slug",
       })
+      .populate({
+        path: "reviews.userId",
+        select: "firstName lastName",
+      })
       .exec((error, product) => {
         if (error) return res.status(400).json({ error });
         if (product) {
@@ -150,4 +154,30 @@ exports.getUserProducts = async (req, res) => {
     .exec();
 
   res.status(200).json({ products });
+};
+
+exports.addReviewToProduct = (req, res) => {
+  if (req.body.productId) {
+    // Product.deleteOne({ _id: productId }).exec((error, result) => {
+    //   if (error) return res.status(400).json({ error });
+    //   if (result) {
+    //     res.status(202).json({ result });
+    //   }
+    // });
+    Product.findOneAndUpdate(
+      { _id: req.body.productId },
+      {
+        $push: {
+          reviews: req.body.reviews,
+        },
+      }
+    ).exec((error, result) => {
+      if (error) return res.status(400).json({ error });
+      if (result) {
+        res.status(202).json({ result });
+      }
+    });
+  } else {
+    res.status(400).json({ error: req.body.productId });
+  }
 };
