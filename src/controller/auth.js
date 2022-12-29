@@ -72,3 +72,66 @@ exports.signin = (req, res) => {
     }
   });
 };
+
+exports.changeInfo = (req, res) => {
+  if (req.body._id) {
+    // Product.deleteOne({ _id: productId }).exec((error, result) => {
+    //   if (error) return res.status(400).json({ error });
+    //   if (result) {
+    //     res.status(202).json({ result });
+    //   }
+    // });
+    User.findOneAndUpdate(
+      { _id: req.body._id },
+      {
+        $set: {
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+        },
+      }
+    ).exec((error, result) => {
+      if (error) return res.status(400).json({ error });
+      if (result) {
+        const { _id, firstName, lastName, email, role, fullName } = req.body;
+
+        res
+          .status(202)
+          .json({ user: { _id, firstName, lastName, email, role, fullName } });
+      }
+    });
+  } else {
+    res.status(400).json({ error: req.body.userId });
+  }
+};
+
+exports.changePassword = async (req, res) => {
+  if (req.body._id) {
+    // Product.deleteOne({ _id: productId }).exec((error, result) => {
+    //   if (error) return res.status(400).json({ error });
+    //   if (result) {
+    //     res.status(202).json({ result });
+    //   }
+    // });
+    // console.log("PASSSSSSSSSSS", req.body);
+    const hash_password = await bcrypt.hash(req.body.password, 10);
+    User.findOneAndUpdate(
+      { _id: req.body._id },
+      {
+        $set: {
+          hash_password: hash_password,
+        },
+      }
+    ).exec((error, result) => {
+      if (error) return res.status(400).json({ error });
+      if (result) {
+        const { _id, firstName, lastName, email, role, fullName } = req.body;
+
+        res
+          .status(202)
+          .json({ user: { _id, firstName, lastName, email, role, fullName } });
+      }
+    });
+  } else {
+    res.status(400).json({ error: req.body.userId });
+  }
+};
