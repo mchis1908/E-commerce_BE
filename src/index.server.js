@@ -19,6 +19,8 @@ const orderRoutes = require("./routes/order");
 const adminOrderRoute = require("./routes/admin/order.routes");
 const wishRoutes = require("./routes/wish");
 const compareRoutes = require("./routes/compare");
+const discountRoutes = require("./routes/discount");
+
 //environment variable
 env.config();
 
@@ -47,6 +49,7 @@ app.use("/api", orderRoutes);
 app.use("/api", adminOrderRoute);
 app.use("/api", wishRoutes);
 app.use("/api", compareRoutes);
+app.use("/api", discountRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
