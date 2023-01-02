@@ -26,3 +26,27 @@ exports.getDiscountByName = (req, res) => {
     }
   });
 };
+
+exports.getDiscounts = (req, res) => {
+  Discount.find({}).exec((error, discounts) => {
+    if (error) return res.status(400).json({ error });
+    if (discounts) {
+      res.status(200).json({ discounts });
+    }
+  });
+};
+
+exports.deleteDiscountById = (req, res) => {
+  console.log(req.body.payload);
+  const { _id } = req.body.payload;
+  if (_id) {
+    Discount.deleteOne({ _id: _id }).exec((error, result) => {
+      if (error) return res.status(400).json({ error });
+      if (result) {
+        res.status(202).json({ result });
+      }
+    });
+  } else {
+    res.status(400).json({ error: "Params required" + _id });
+  }
+};
