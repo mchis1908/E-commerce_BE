@@ -34,6 +34,10 @@ const orderSchema = new mongoose.Schema(
           type: Number,
           required: true,
         },
+        isReview: {
+          type: Boolean,
+          default: false,
+        },
       },
     ],
     paymentStatus: {

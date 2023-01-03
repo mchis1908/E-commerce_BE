@@ -91,3 +91,19 @@ exports.updateOrder = (req, res) => {
     }
   });
 };
+
+exports.updateReviewOrder = (req, res) => {
+  Order.updateOne(
+    { _id: req.body.orderId, "items.productId": req.body.productId },
+    {
+      $set: {
+        "items.$.isReview": true,
+      },
+    }
+  ).exec((error, order) => {
+    if (error) return res.status(400).json({ error });
+    if (order) {
+      res.status(201).json({ order });
+    }
+  });
+};
