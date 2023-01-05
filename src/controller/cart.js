@@ -66,7 +66,7 @@ exports.getCartItems = (req, res) => {
   //const { user } = req.body.payload;
   //if(user){
   Cart.findOne({ user: req.user._id })
-    .populate("cartItems.product", "_id name price productPictures")
+    .populate("cartItems.product", "_id name price productPictures sale")
     .exec((error, cart) => {
       if (error) {
         console.log("ERRRROORORO: ", error);
@@ -81,6 +81,7 @@ exports.getCartItems = (req, res) => {
             img: item.product.productPictures[0].img,
             price: item.product.price,
             qty: item.quantity,
+            sale: item.product.sale,
           };
         });
         res.status(200).json({ cartItems });
