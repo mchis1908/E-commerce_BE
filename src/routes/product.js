@@ -13,6 +13,7 @@ const {
   getProducts,
   getUserProducts,
   addReviewToProduct,
+  addSalePrice,
 } = require("../controller/product");
 const multer = require("multer");
 const router = express.Router();
@@ -64,4 +65,6 @@ router.post(
   userMiddleware,
   addReviewToProduct
 );
+
+router.post("/product/addSale", requireSignin, adminMiddleware, addSalePrice);
 module.exports = router;

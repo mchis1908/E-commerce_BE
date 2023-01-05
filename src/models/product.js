@@ -17,6 +17,10 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    sale: {
+      type: String,
+      default: "0",
+    },
     description: {
       type: String,
       required: true,

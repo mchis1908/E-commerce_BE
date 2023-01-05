@@ -181,3 +181,29 @@ exports.addReviewToProduct = (req, res) => {
     res.status(400).json({ error: req.body.productId });
   }
 };
+
+exports.addSalePrice = (req, res) => {
+  if (req.body.productId) {
+    // Product.deleteOne({ _id: productId }).exec((error, result) => {
+    //   if (error) return res.status(400).json({ error });
+    //   if (result) {
+    //     res.status(202).json({ result });
+    //   }
+    // });
+    Product.findOneAndUpdate(
+      { _id: req.body.productId },
+      {
+        $set: {
+          sale: req.body.sale,
+        },
+      }
+    ).exec((error, result) => {
+      if (error) return res.status(400).json({ error });
+      if (result) {
+        res.status(202).json({ result });
+      }
+    });
+  } else {
+    res.status(400).json({ error: req.body.productId });
+  }
+};
