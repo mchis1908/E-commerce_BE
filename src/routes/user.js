@@ -1,6 +1,8 @@
 const express = require("express");
+const { deleteUserById, getUsers } = require("../controller/user");
 const router = express.Router();
 const User = require("../models/user");
+const { requireSignin, adminMiddleware } = require("../common_middleware");
 
 router.post("/signin", (req, res) => {});
 
@@ -35,3 +37,14 @@ router.post("/signup", (req, res) => {
     });
   });
 });
+
+router.get("/user/getusers", getUsers);
+
+router.delete(
+  "/user/deleteUserById",
+  requireSignin,
+  adminMiddleware,
+  deleteUserById
+);
+
+module.exports = router;

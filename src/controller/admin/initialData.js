@@ -2,6 +2,7 @@ const Category = require("../../models/category");
 const Product = require("../../models/product");
 const Order = require("../../models/order");
 const Discount = require("../../models/discount");
+const User = require("../../models/user");
 
 function createCategories(categories, parentId = null) {
   const categoryList = [];
@@ -41,10 +42,12 @@ exports.initialData = async (req, res) => {
     })
     .exec();
   const discounts = await Discount.find({}).exec();
+  const users = await User.find({}).exec();
   res.status(200).json({
     categories: createCategories(categories),
     products,
     orders,
     discounts,
+    users,
   });
 };

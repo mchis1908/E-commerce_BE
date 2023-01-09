@@ -195,6 +195,10 @@ exports.addSalePrice = (req, res) => {
       {
         $set: {
           sale: req.body.sale,
+          name: req.body.name,
+          price: req.body.price,
+          quantity: req.body.quantity,
+          description: req.body.description,
         },
       }
     ).exec((error, result) => {
