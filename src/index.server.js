@@ -3,7 +3,27 @@ const env = require("dotenv");
 const app = express();
 const mongoose = require("mongoose");
 const path = require("path");
+
 const cors = require("cors");
+const http = require("http");
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+
+app.use(cors());
+
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log(`user connected ${socket.id}`);
+  socket.on("new-order", (data) => {
+    socket.broadcast.emit("order", data);
+  });
+});
 
 //routes
 
@@ -35,7 +55,6 @@ mongoose
     console.log("Database connected");
   });
 
-app.use(cors());
 app.use(express.json());
 app.use("/public", express.static(path.join(__dirname, "uploads")));
 app.use("/api", authRoutes);
@@ -53,6 +72,6 @@ app.use("/api", compareRoutes);
 app.use("/api", discountRoutes);
 app.use("/api", userRoutes);
 
-app.listen(process.env.PORT, () => {
+server.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
 });
