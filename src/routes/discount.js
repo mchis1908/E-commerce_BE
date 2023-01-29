@@ -5,6 +5,7 @@ const {
   getDiscountByName,
   getDiscounts,
   deleteDiscountById,
+  updateDiscount,
 } = require("../controller/discount");
 const router = express.Router();
 
@@ -17,4 +18,5 @@ router.delete(
   adminMiddleware,
   deleteDiscountById
 );
+router.post("/discount/update", requireSignin, adminMiddleware, updateDiscount);
 module.exports = router;
