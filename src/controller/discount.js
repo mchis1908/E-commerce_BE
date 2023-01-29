@@ -50,3 +50,31 @@ exports.deleteDiscountById = (req, res) => {
     res.status(400).json({ error: "Params required" + _id });
   }
 };
+
+exports.updateDiscount = (req, res) => {
+  if (req.body.discountId) {
+    // Product.deleteOne({ _id: productId }).exec((error, result) => {
+    //   if (error) return res.status(400).json({ error });
+    //   if (result) {
+    //     res.status(202).json({ result });
+    //   }
+    // });
+    Discount.findOneAndUpdate(
+      { _id: req.body.discountId },
+      {
+        $set: {
+          name: req.body.name,
+          percent: req.body.percent,
+          endDate: req.body.endDate,
+        },
+      }
+    ).exec((error, result) => {
+      if (error) return res.status(400).json({ error });
+      if (result) {
+        res.status(202).json({ result });
+      }
+    });
+  } else {
+    res.status(400).json({ error: req.body.discountId });
+  }
+};
